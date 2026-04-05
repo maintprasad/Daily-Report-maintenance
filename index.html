@@ -562,138 +562,7 @@ body.dark .an-period-sel { background:var(--bg3);border-color:var(--border);colo
   .analytics-grid { grid-template-columns:1fr }
   .an-kpi-grid { grid-template-columns:repeat(2,1fr) }
 }
-
-/* ═══════════════════════════════════════════════════
-   TOP TECHNICIAN PAGE
-═══════════════════════════════════════════════════ */
-
-/* Podium */
-.podium-wrap { display:flex;align-items:flex-end;justify-content:center;gap:12px;margin-bottom:28px }
-.podium-slot { display:flex;flex-direction:column;align-items:center;gap:0;cursor:pointer;transition:transform .15s }
-.podium-slot:hover { transform:translateY(-3px) }
-.podium-avatar {
-  width:60px;height:60px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;
-  border:3px solid transparent;margin-bottom:6px;
-  transition:box-shadow .2s;
-}
-.podium-slot:hover .podium-avatar { box-shadow:0 0 0 4px rgba(74,158,63,.25) }
-.podium-avatar.rank-1 { background:linear-gradient(135deg,#f9c74f,#f8961e);color:#7a3800;border-color:#f9c74f;width:72px;height:72px;font-size:26px }
-.podium-avatar.rank-2 { background:linear-gradient(135deg,#ced4da,#adb5bd);color:#343a40;border-color:#ced4da }
-.podium-avatar.rank-3 { background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff8f0;border-color:#cd7f32 }
-.podium-avatar.rank-other { background:var(--bg3);color:var(--text2);border-color:var(--border);width:48px;height:48px;font-size:16px }
-.podium-name { font-size:12px;font-weight:700;color:var(--text);text-align:center;max-width:80px;line-height:1.2 }
-.podium-score { font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--green2);margin-top:2px }
-.podium-rank-label { font-size:10px;color:var(--text3);margin-top:1px }
-.podium-bar {
-  width:100%;border-radius:6px 6px 0 0;
-  min-height:20px;margin-top:8px;
-  transition:background .3s;
-}
-.podium-bar.rank-1 { background:linear-gradient(180deg,#f9c74f,#f8961e88);min-height:80px }
-.podium-bar.rank-2 { background:linear-gradient(180deg,#ced4da,#adb5bd88);min-height:55px }
-.podium-bar.rank-3 { background:linear-gradient(180deg,#cd7f32,#a0522d88);min-height:38px }
-.podium-bar.rank-other { background:var(--border);min-height:20px }
-
-/* Technician cards */
-.tech-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:24px }
-.tech-card {
-  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
-  padding:18px 20px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;
-}
-.tech-card::before { content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:12px 0 0 12px }
-.tech-card.tier-S::before { background:linear-gradient(180deg,#f9c74f,#f8961e) }
-.tech-card.tier-A::before { background:var(--green) }
-.tech-card.tier-B::before { background:var(--blue) }
-.tech-card.tier-C::before { background:var(--purple) }
-.tech-card.tier-D::before { background:var(--text3) }
-.tech-card:hover { transform:translateY(-2px);box-shadow:0 6px 20px rgba(26,58,107,.12) }
-.tech-card:hover.tier-S { border-color:rgba(249,199,79,.5) }
-.tech-card:hover.tier-A { border-color:rgba(74,158,63,.4) }
-.tech-card:hover.tier-B { border-color:rgba(43,108,184,.4) }
-
-.tech-card-head { display:flex;align-items:center;gap:12px;margin-bottom:14px }
-.tech-initials {
-  width:44px;height:44px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:700;font-family:'IBM Plex Mono',monospace;
-}
-.tier-S .tech-initials { background:rgba(249,199,79,.2);color:#b86a00;border:1px solid rgba(249,199,79,.4) }
-.tier-A .tech-initials { background:rgba(74,158,63,.12);color:var(--green2);border:1px solid rgba(74,158,63,.3) }
-.tier-B .tech-initials { background:rgba(43,108,184,.1);color:var(--blue);border:1px solid rgba(43,108,184,.25) }
-.tier-C .tech-initials { background:rgba(184,143,247,.1);color:var(--purple);border:1px solid rgba(184,143,247,.25) }
-.tier-D .tech-initials { background:var(--bg3);color:var(--text3);border:1px solid var(--border) }
-
-.tech-name { font-size:14px;font-weight:700;color:var(--navy) }
-.tech-meta { font-size:11px;color:var(--text3);margin-top:2px }
-.tech-tier-badge {
-  margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
-  padding:3px 10px;border-radius:5px;
-}
-.tier-S .tech-tier-badge { background:rgba(249,199,79,.2);color:#9a6000 }
-.tier-A .tech-tier-badge { background:rgba(74,158,63,.12);color:var(--green2) }
-.tier-B .tech-tier-badge { background:rgba(43,108,184,.1);color:var(--blue) }
-.tier-C .tech-tier-badge { background:rgba(184,143,247,.1);color:var(--purple) }
-.tier-D .tech-tier-badge { background:var(--bg3);color:var(--text3) }
-
-/* Score bar */
-.score-total-row { display:flex;align-items:center;gap:10px;margin-bottom:10px }
-.score-total-val { font-size:24px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--navy);min-width:48px }
-.score-total-bar { flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden }
-.score-total-fill { height:100%;border-radius:4px;transition:width .6s ease }
-
-/* Sub-score breakdown */
-.score-breakdown { display:grid;grid-template-columns:1fr 1fr;gap:6px }
-.score-item { display:flex;align-items:center;gap:6px }
-.score-item-label { font-size:10px;color:var(--text3);font-family:'IBM Plex Mono',monospace;width:80px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis }
-.score-item-bar { flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden }
-.score-item-fill { height:100%;border-radius:2px }
-.score-item-val { font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--text2);width:22px;text-align:right;flex-shrink:0 }
-
-/* Score legend pills */
-.score-legend { display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px }
-.legend-pill { font-size:10px;font-family:'IBM Plex Mono',monospace;padding:3px 9px;border-radius:4px }
-.legend-S { background:rgba(249,199,79,.15);color:#9a6000;border:1px solid rgba(249,199,79,.35) }
-.legend-A { background:rgba(74,158,63,.1);color:var(--green2);border:1px solid rgba(74,158,63,.25) }
-.legend-B { background:rgba(43,108,184,.08);color:var(--blue);border:1px solid rgba(43,108,184,.2) }
-.legend-C { background:rgba(184,143,247,.1);color:var(--purple);border:1px solid rgba(184,143,247,.2) }
-.legend-D { background:var(--bg3);color:var(--text3);border:1px solid var(--border) }
-
-/* Detail modal for technician */
-.tech-detail-header { display:flex;align-items:center;gap:16px;margin-bottom:20px }
-.tech-detail-avatar {
-  width:64px;height:64px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;flex-shrink:0;
-}
-.tech-score-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px }
-.tech-score-box { background:var(--bg3);border-radius:8px;padding:10px 12px;text-align:center }
-.tech-score-box-val { font-size:20px;font-weight:700;color:var(--navy);font-family:'IBM Plex Mono',monospace }
-.tech-score-box-lbl { font-size:10px;color:var(--text3);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-top:3px }
-.tech-strength-row { display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px }
-.strength-tag { font-size:11px;padding:3px 9px;border-radius:5px;font-family:'IBM Plex Mono',monospace }
-.strength-pos { background:rgba(74,158,63,.1);color:var(--green2);border:1px solid rgba(74,158,63,.25) }
-.strength-neg { background:rgba(192,57,43,.08);color:var(--red);border:1px solid rgba(192,57,43,.2) }
-
-/* Tooltip explanation */
-.score-explain { background:var(--bg3);border-radius:8px;padding:12px 14px;font-size:11px;color:var(--text2);line-height:1.6;margin-top:12px }
-.score-explain strong { color:var(--text) }
-
-body.dark .tech-card { background:var(--bg2);border-color:var(--border) }
-body.dark .tech-card:hover { box-shadow:0 6px 20px rgba(0,0,0,.4) }
-body.dark .tech-name { color:#d4e8d4 }
-body.dark .score-total-val { color:#d4e8d4 }
-body.dark .tech-score-box { background:var(--bg3) }
-body.dark .tech-score-box-val { color:#d4e8d4 }
-
-@media(max-width:768px) {
-  .podium-wrap { gap:6px }
-  .tech-grid { grid-template-columns:1fr }
-  .score-breakdown { grid-template-columns:1fr }
-  .tech-score-grid { grid-template-columns:repeat(2,1fr) }
-}
-
+   
 /* ═══════════════════════════════════════════════════
    PRINT STYLES
 ═══════════════════════════════════════════════════ */
@@ -804,7 +673,6 @@ body.dark .match-panel { background:var(--bg3) }
     <button class="nav-btn active" data-page="dashboard">Dashboard</button>
     <button class="nav-btn" data-page="reports">Reports</button>
     <button class="nav-btn" data-page="wo">Work Order</button>
-    <button class="nav-btn" data-page="toptech">Top Tech</button>
     <button class="nav-btn" data-page="analytics">Analytics</button>
     <button class="nav-btn" data-page="config">Config</button>
   </div>
@@ -1159,102 +1027,6 @@ body.dark .match-panel { background:var(--bg3) }
   </div>
 </div>
 
-<!-- ════════════ TOP TECHNICIAN PAGE ════════════ -->
-<div class="page" id="page-toptech">
-  <div class="sec-hdr">
-    <div>
-      <div class="sec-title">Top Technician</div>
-      <div class="sec-sub" id="toptechDateLabel">Penilaian berdasarkan kualitas & kecepatan kerja</div>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <select class="fsel" id="ttPeriod" onchange="renderTopTech()">
-        <option value="30" selected>30 Hari Terakhir</option>
-        <option value="90">90 Hari Terakhir</option>
-        <option value="0">Semua Data</option>
-      </select>
-      <button class="btn-ghost" onclick="toggleTTDebug()" id="ttDebugBtn" title="Lihat data mentah per teknisi">🔍 Debug Data</button>
-    </div>
-  </div>
-
-  <!-- SPV Override Banner -->
-  <div id="spvOverrideBanner" style="display:none;background:rgba(184,143,247,.08);border:1px solid rgba(184,143,247,.3);border-radius:10px;padding:12px 16px;margin-bottom:16px">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-      <div style="font-size:12px;color:var(--purple)"><strong>⭐ Mode SPV Override aktif</strong> — urutan atas telah disesuaikan oleh Supervisor</div>
-      <button class="btn-ghost" style="font-size:11px;color:var(--red)" onclick="clearSPVOverride()">✕ Reset ke Auto</button>
-    </div>
-  </div>
-
-  <!-- Debug Panel (hidden by default) -->
-  <div id="ttDebugPanel" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;overflow-x:auto">
-    <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:12px">
-      Data Mentah Per Teknisi — Bantu diagnosa mengapa seseorang menang/kalah
-    </div>
-    <table style="width:100%;border-collapse:collapse;font-size:11px;font-family:'IBM Plex Mono',monospace;min-width:700px">
-      <thead>
-        <tr style="border-bottom:2px solid var(--border)">
-          <th style="text-align:left;padding:6px 10px;color:var(--text3)">Nama</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text3)" title="Jumlah laporan mentah (termasuk co-PIC)">Raw</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text3)" title="Laporan di mana dia PIC utama/solo">Utama</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text3)" title="Kredit efektif setelah discount co-PIC">Kredit</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text3)">TS</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text3)">Urgent</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text3)">Avg Dur</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text3)">Closed%</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text3)">Note</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text3)">Depth</th>
-          <th style="text-align:left;padding:6px 8px;color:var(--text3)">Laporan Terakhir</th>
-        </tr>
-      </thead>
-      <tbody id="ttDebugBody"></tbody>
-    </table>
-    <div style="font-size:10px;color:var(--text3);margin-top:8px">
-      <strong>Raw</strong> = total laporan termasuk co-PIC ·
-      <strong>Utama</strong> = laporan di mana dia PIC utama/solo ·
-      <strong>Kredit</strong> = kredit efektif setelah discount co-PIC (warna oranye = beda besar dgn Raw → inflasi co-PIC) ·
-      TS = Troubleshooting · Urgent = laporan downtime &gt; 0 ·
-      Note/Depth = skor kualitas catatan (0–100)
-    </div>
-  </div>
-
-  <!-- Tier Legend -->
-  <div class="score-legend">
-    <span class="legend-pill legend-S">S — Elite (85–100)</span>
-    <span class="legend-pill legend-A">A — Excellent (70–84)</span>
-    <span class="legend-pill legend-B">B — Good (55–69)</span>
-    <span class="legend-pill legend-C">C — Average (40–54)</span>
-    <span class="legend-pill legend-D">D — Needs Improvement (&lt;40)</span>
-    <span class="legend-pill" style="background:rgba(184,143,247,.1);color:var(--purple);border:1px solid rgba(184,143,247,.3)">⭐ = SPV Override</span>
-  </div>
-
-  <!-- Podium Top 3 -->
-  <div class="podium-wrap" id="toptechPodium"></div>
-
-  <!-- Technician Cards -->
-  <div class="tech-grid" id="toptechGrid"></div>
-
-  <!-- Empty state -->
-  <div class="empty" id="toptechEmpty" style="display:none">
-    <div class="empty-ico">🏅</div>
-    <div class="empty-msg">Belum ada data laporan untuk periode ini</div>
-  </div>
-
-  <!-- Score methodology note -->
-  <div class="score-explain" style="margin-top:8px">
-    <strong>Cara penilaian (7 dimensi):</strong>
-    <br><strong>Kedalaman Teknis (22%)</strong> — apakah catatan menggunakan istilah teknis spesifik, angka ukuran, analisis sebab-akibat. Penalti hanya untuk laporan yang benar-benar kosong atau asal isi.
-    <strong>Kualitas Catatan (22%)</strong> — panjang, struktur kalimat, dan kelengkapan field deskripsi, akar masalah, tindakan.
-    <strong>Respons Urgent (20%)</strong> — seberapa sering dan cepat menangani laporan dengan downtime. Teknisi yang berani handle masalah sulit mendapat nilai lebih.
-    <strong>Completion Rate (12%)</strong> — % laporan yang benar-benar CLOSED.
-    <strong>Kecepatan (10%)</strong> — durasi selesai, dengan koreksi: teknisi Troubleshooting spesialis mendapat bonus karena wajar durasinya lebih panjang.
-    <strong>Konsistensi (6%)</strong> — hari aktif dalam periode.
-    <strong>Volume (8%)</strong> — jumlah laporan (bobot kecil — banyak laporan bukan berarti lebih ahli).
-    <br><br>💡 <strong>Klik kartu teknisi manapun</strong> untuk lihat detail breakdown + opsi SPV Override jika urutan otomatis tidak sesuai kenyataan lapangan.
-  </div>
-</div>
-
-  </div>
-</div>
-
 <!-- ════════════ WORK ORDER PAGE ════════════ -->
 <div class="page" id="page-wo">
   <div class="sec-hdr">
@@ -1363,7 +1135,6 @@ body.dark .match-panel { background:var(--bg3) }
     <button class="mnav-btn" data-page="reports"><span class="mnav-ico">▤</span>Laporan</button>
     <button class="mnav-btn" data-page="wo"><span class="mnav-ico">📋</span>WO</button>
     <button class="mnav-btn" onclick="openAddModal()"><span class="mnav-ico">✚</span>Buat</button>
-    <button class="mnav-btn" data-page="toptech"><span class="mnav-ico">🏅</span>Top Tech</button>
   </div>
 </nav>
 
@@ -1402,20 +1173,6 @@ body.dark .match-panel { background:var(--bg3) }
         <button class="btn-ghost" onclick="closeOverlay('woLinkOverlay')">Selesai</button>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- ═══ MODAL: TECHNICIAN DETAIL ═══ -->
-<div class="overlay" id="techDetailOverlay">
-  <div class="modal modal-xl">
-    <div class="modal-hdr">
-      <div>
-        <div class="modal-title" id="techDetailTitle">Detail Teknisi</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:2px" id="techDetailSub"></div>
-      </div>
-      <button class="modal-close" onclick="closeOverlay('techDetailOverlay')">×</button>
-    </div>
-    <div class="modal-body" id="techDetailBody"></div>
   </div>
 </div>
 
