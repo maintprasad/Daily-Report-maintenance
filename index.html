@@ -2163,7 +2163,7 @@ function renderDashboard() {
       'Troubleshooting':'#e05c5c',
       'Improvement':'#3dd68c',
       'Monitoring':'#b88ff7',
-      'Project':'#fb8c3a'
+      'Project':'#fb8c3a',
       'Data Collection': '#2a7a5a'
     });
   renderMiniChart('chartUnit', groupCount(all,'unit'),
@@ -3482,7 +3482,7 @@ function typeBadge(t) {
     'Troubleshooting':        'b-trouble',
     'Improvement':            'b-improve',
     'Monitoring':             'b-monitor',
-    'Project':                'b-project'
+    'Project':                'b-project',
     'Data Collection':        'b-datacoll',
   }[t] || '';
 }
@@ -3492,7 +3492,7 @@ function shortType(t) {
     'Troubleshooting':        'TS',
     'Improvement':            'IMP',
     'Monitoring':             'MON',
-    'Project':                'PROJ'
+    'Project':                'PROJ',
     'Data Collection':        'DC',
   }[t] || (t||'—');
 }
