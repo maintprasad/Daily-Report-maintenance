@@ -175,6 +175,7 @@ body { background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-s
 .b-improve { background:rgba(74,158,63,.1);color:var(--green2);border:1px solid rgba(74,158,63,.2) }
 .b-monitor { background:rgba(184,143,247,.12);color:var(--purple) }
 .b-project { background:rgba(251,140,58,.12);color:#c05c00;border:1px solid rgba(251,140,58,.3) }
+.b-datacoll { background:rgba(42,122,90,.12);color:var(--teal);border:1px solid rgba(42,122,90,.25) }
 .b-mekanikal { background:rgba(251,146,60,.12);color:var(--orange) }
 .b-elektrik  { background:rgba(240,180,41,.12);color:var(--accent) }
 .b-civil     { background:rgba(61,214,140,.12);color:var(--green) }
@@ -719,6 +720,7 @@ body.dark .match-panel { background:var(--bg3) }
     <div class="sb-item" onclick="quickFilter('type','Improvement')"><span class="sb-icon" style="color:var(--green)">▸</span>Improvement</div>
     <div class="sb-item" onclick="quickFilter('type','Monitoring')"><span class="sb-icon" style="color:var(--purple)">▸</span>Monitoring</div>
     <div class="sb-item" onclick="quickFilter('type','Project')"><span class="sb-icon" style="color:var(--orange)">▸</span>Project</div>
+    <div class="sb-item" onclick="quickFilter('type','Data Collection')"><span class="sb-icon" style="color:var(--teal)">▸</span>Data Collection</div>
   </div>
   <div class="sb-section">
     <div class="sb-label">Actions</div>
@@ -838,6 +840,7 @@ body.dark .match-panel { background:var(--bg3) }
       <option>Improvement</option>
       <option>Monitoring</option>
       <option>Project</option>
+      <option>Data Collection</option>
     </select>
     <select class="fsel" id="fStatus" onchange="applyFilters()">
       <option value="">Semua Status</option>
@@ -1212,6 +1215,7 @@ body.dark .match-panel { background:var(--bg3) }
               <option>Improvement</option>
               <option>Monitoring</option>
               <option>Project</option>
+              <option>Data Collection</option>
             </select>
             <div class="ferr" id="e-jenisLaporan"></div>
           </div>
@@ -2120,7 +2124,6 @@ function renderAll() {
   renderDashboard();
   applyFilters();
   checkOpenAlerts();
-  // Update WO badge dari cache jika ada data
   updateWOBadge();
 }
 
@@ -2135,7 +2138,6 @@ function updateWOBadge() {
 }
 
 function renderDashboard() {
-  // Gunakan tanggal lokal (bukan UTC) agar benar di timezone WIB
   const _now  = new Date();
   const today = _now.getFullYear() + '-'
     + String(_now.getMonth()+1).padStart(2,'0') + '-'
@@ -2154,7 +2156,7 @@ function renderDashboard() {
   setText('sc-downtime',dtToday + ' mnt');
   setText('sc-total',   all.length);
 
-  // Mini charts — now includes Project
+  // Mini charts — includes Project
   renderMiniChart('chartType', groupCount(all,'jenisLaporan'),
     {
       'Preventive Maintenance':'#5b9cf6',
@@ -2162,6 +2164,7 @@ function renderDashboard() {
       'Improvement':'#3dd68c',
       'Monitoring':'#b88ff7',
       'Project':'#fb8c3a'
+      'Data Collection': '#2a7a5a'
     });
   renderMiniChart('chartUnit', groupCount(all,'unit'),
     {'Unit 1':'#5b9cf6','Unit 2':'#b88ff7'});
@@ -3480,6 +3483,7 @@ function typeBadge(t) {
     'Improvement':            'b-improve',
     'Monitoring':             'b-monitor',
     'Project':                'b-project'
+    'Data Collection':        'b-datacoll',
   }[t] || '';
 }
 function shortType(t) {
@@ -3489,6 +3493,7 @@ function shortType(t) {
     'Improvement':            'IMP',
     'Monitoring':             'MON',
     'Project':                'PROJ'
+    'Data Collection':        'DC',
   }[t] || (t||'—');
 }
 function workBadge(t) {
