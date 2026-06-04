@@ -567,6 +567,11 @@ body.dark .an-period-sel { background:var(--bg3);border-color:var(--border);colo
 /* ═══════════════════════════════════════════════════
    PRINT STYLES
 ═══════════════════════════════════════════════════ */
+/* TS & IMP page responsive */
+@media(max-width:768px) {
+  #tsChartsRow { grid-template-columns:1fr !important }
+}
+
 @media print {
   *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
   body { background:#fff !important;color:#111 !important }
@@ -673,6 +678,8 @@ body.dark .match-panel { background:var(--bg3) }
   <div class="top-nav">
     <button class="nav-btn active" data-page="dashboard">Dashboard</button>
     <button class="nav-btn" data-page="reports">Reports</button>
+    <button class="nav-btn" data-page="troubleshooting">Troubleshooting</button>
+    <button class="nav-btn" data-page="improvement">Improvement</button>
     <button class="nav-btn" data-page="wo">Work Order</button>
     <button class="nav-btn" data-page="analytics">Analytics</button>
     <button class="nav-btn" data-page="config">Config</button>
@@ -698,6 +705,8 @@ body.dark .match-panel { background:var(--bg3) }
     <div class="sb-label">Menu</div>
     <div class="sb-item active" data-page="dashboard"><span class="sb-icon">◈</span>Dashboard</div>
     <div class="sb-item" data-page="reports"><span class="sb-icon">▤</span>Semua Laporan <span class="sb-badge" id="openBadge" style="display:none">0</span></div>
+    <div class="sb-item" data-page="troubleshooting"><span class="sb-icon" style="color:var(--red)">🔧</span>Troubleshooting</div>
+    <div class="sb-item" data-page="improvement"><span class="sb-icon" style="color:var(--green)">📈</span>Improvement</div>
     <div class="sb-item" data-page="wo"><span class="sb-icon">📋</span>Work Order <span class="sb-badge" id="woBadge" style="display:none;background:var(--blue)">0</span></div>
     <div class="sb-item" data-page="analytics"><span class="sb-icon">📊</span>Analytics</div>
     <div class="sb-item" onclick="openAddModal()"><span class="sb-icon">✚</span>Buat Laporan</div>
@@ -715,12 +724,8 @@ body.dark .match-panel { background:var(--bg3) }
   </div>
   <div class="sb-section">
     <div class="sb-label">Jenis</div>
-    <div class="sb-item" onclick="quickFilter('type','Preventive Maintenance')"><span class="sb-icon" style="color:var(--blue)">▸</span>Preventive</div>
     <div class="sb-item" onclick="quickFilter('type','Troubleshooting')"><span class="sb-icon" style="color:var(--red)">▸</span>Troubleshooting</div>
     <div class="sb-item" onclick="quickFilter('type','Improvement')"><span class="sb-icon" style="color:var(--green)">▸</span>Improvement</div>
-    <div class="sb-item" onclick="quickFilter('type','Monitoring')"><span class="sb-icon" style="color:var(--purple)">▸</span>Monitoring</div>
-    <div class="sb-item" onclick="quickFilter('type','Project')"><span class="sb-icon" style="color:var(--orange)">▸</span>Project</div>
-    <div class="sb-item" onclick="quickFilter('type','Data Collection')"><span class="sb-icon" style="color:var(--teal)">▸</span>Data Collection</div>
   </div>
   <div class="sb-section">
     <div class="sb-label">Actions</div>
@@ -793,7 +798,7 @@ body.dark .match-panel { background:var(--bg3) }
     <div class="tbl-scroll">
       <table class="data-table">
         <thead><tr>
-          <th>ID</th><th>Waktu</th><th>Unit</th><th>Area</th><th>Mesin</th><th>Jenis</th><th>PIC</th><th>Status</th><th>Downtime</th>
+          <th>ID</th><th>Waktu</th><th>Jenis Laporan</th><th>Unit</th><th>Area</th><th>Mesin</th><th>Jenis Pekerjaan</th><th>PIC</th><th>Tindakan</th>
         </tr></thead>
         <tbody id="recentBody">
           <tr><td colspan="9"><div class="empty"><div class="empty-ico"><span class="spinner"></span></div><div class="empty-msg">Memuat data...</div></div></td></tr>
@@ -835,12 +840,8 @@ body.dark .match-panel { background:var(--bg3) }
     </select>
     <select class="fsel" id="fType" onchange="applyFilters()">
       <option value="">Semua Jenis</option>
-      <option>Preventive Maintenance</option>
       <option>Troubleshooting</option>
       <option>Improvement</option>
-      <option>Monitoring</option>
-      <option>Project</option>
-      <option>Data Collection</option>
     </select>
     <select class="fsel" id="fStatus" onchange="applyFilters()">
       <option value="">Semua Status</option>
@@ -864,9 +865,8 @@ body.dark .match-panel { background:var(--bg3) }
           <th onclick="sortBy('mesin')">Mesin<span class="si">⇕</span></th>
           <th onclick="sortBy('jenisPekerjaan')">Pekerjaan<span class="si">⇕</span></th>
           <th onclick="sortBy('pic')">PIC<span class="si">⇕</span></th>
-          <th onclick="sortBy('status')">Status<span class="si">⇕</span></th>
-          <th onclick="sortBy('downtime')">Downtime<span class="si">⇕</span></th>
-          <th>Aksi</th>
+          <th onclick="sortBy('status')">Tindakan<span class="si">⇕</span></th>
+          <th onclick="sortBy('tindakan')">Option<span class="si">⇕</span></th>
         </tr></thead>
         <tbody id="reportBody">
           <tr><td colspan="11"><div class="empty"><div class="empty-ico"><span class="spinner"></span></div><div class="empty-msg">Memuat data...</div></div></td></tr>
@@ -1127,6 +1127,160 @@ body.dark .match-panel { background:var(--bg3) }
   </div>
 </div>
 
+<!-- ════════════ TROUBLESHOOTING PAGE ════════════ -->
+<div class="page" id="page-troubleshooting">
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-title" style="color:var(--red)">🔧 Troubleshooting</div>
+      <div class="sec-sub" id="tsDateLabel">—</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <select class="fsel" id="tsPeriod" onchange="renderTSPage()">
+        <option value="7">7 Hari</option>
+        <option value="30" selected>30 Hari</option>
+        <option value="90">90 Hari</option>
+        <option value="0">Semua</option>
+      </select>
+      <button class="btn-primary" onclick="openAddModal()">✚ Buat Laporan</button>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div class="stat-grid" id="tsKpiGrid" style="margin-bottom:20px">
+    <div class="stat-card c-blue"><div class="stat-lbl">Total TS</div><div class="stat-val" id="ts-total">—</div><div class="stat-sub">laporan troubleshooting</div></div>
+    <div class="stat-card c-red"><div class="stat-lbl">OPEN</div><div class="stat-val" id="ts-open">—</div><div class="stat-sub">belum selesai</div></div>
+    <div class="stat-card c-green"><div class="stat-lbl">CLOSED</div><div class="stat-val" id="ts-closed">—</div><div class="stat-sub">sudah selesai</div></div>
+    <div class="stat-card c-yellow"><div class="stat-lbl">HANDOVER</div><div class="stat-val" id="ts-handover">—</div><div class="stat-sub">serah terima</div></div>
+    <div class="stat-card c-orange"><div class="stat-lbl">Completion Rate</div><div class="stat-val" id="ts-rate">—</div><div class="stat-sub">% sudah closed</div></div>
+  </div>
+
+  <!-- Open vs Closed Chart + Top Mesin -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px" id="tsChartsRow">
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px">
+      <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px">Open vs Closed per Minggu</div>
+      <div style="height:200px"><canvas id="tsOpenClosedChart"></canvas></div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px">
+      <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px">Top 10 Mesin Bermasalah</div>
+      <div id="tsMesinRank"></div>
+    </div>
+  </div>
+
+  <!-- Daftar OPEN TS -->
+  <div style="font-size:13px;font-weight:600;color:var(--red);margin-bottom:10px">
+    ⚠ Masih OPEN / HANDOVER
+  </div>
+  <div class="tbl-wrap" style="margin-bottom:20px">
+    <div class="tbl-scroll">
+      <table class="data-table">
+        <thead><tr>
+          <th>ID</th><th>Tanggal</th><th>Unit</th><th>Area</th><th>Mesin</th><th>Deskripsi</th><th>PIC</th><th>Status</th><th>Tindakan</th>
+        </tr></thead>
+        <tbody id="tsOpenBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Daftar CLOSED TS -->
+  <div style="font-size:13px;font-weight:600;color:var(--green2);margin-bottom:10px">
+    ✓ Sudah CLOSED
+  </div>
+  <div class="tbl-wrap">
+    <div class="tbl-scroll">
+      <table class="data-table">
+        <thead><tr>
+          <th>ID</th><th>Tanggal</th><th>Unit</th><th>Area</th><th>Mesin</th><th>Deskripsi</th><th>Akar Masalah</th><th>Tindakan</th><th>PIC</th>
+        </tr></thead>
+        <tbody id="tsClosedBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ IMPROVEMENT PAGE ════════════ -->
+<div class="page" id="page-improvement">
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-title" style="color:var(--green2)">📈 Improvement</div>
+      <div class="sec-sub" id="impDateLabel">—</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <select class="fsel" id="impPeriod" onchange="renderImpPage()">
+        <option value="7">7 Hari</option>
+        <option value="30" selected>30 Hari</option>
+        <option value="90">90 Hari</option>
+        <option value="0">Semua</option>
+      </select>
+      <button class="btn-primary" onclick="openAddModal()">✚ Buat Laporan</button>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div class="stat-grid" style="margin-bottom:20px">
+    <div class="stat-card c-green"><div class="stat-lbl">Total Improvement</div><div class="stat-val" id="imp-total">—</div><div class="stat-sub">laporan improvement</div></div>
+    <div class="stat-card c-blue"><div class="stat-lbl">Request (Open)</div><div class="stat-val" id="imp-request">—</div><div class="stat-sub">masih berjalan</div></div>
+    <div class="stat-card c-green"><div class="stat-lbl">Realisasi (Closed)</div><div class="stat-val" id="imp-realisasi">—</div><div class="stat-sub">sudah selesai</div></div>
+    <div class="stat-card c-yellow"><div class="stat-lbl">HANDOVER</div><div class="stat-val" id="imp-handover">—</div><div class="stat-sub">dalam proses</div></div>
+    <div class="stat-card c-orange"><div class="stat-lbl">Realisasi Rate</div><div class="stat-val" id="imp-rate">—</div><div class="stat-sub">% request terealisasi</div></div>
+  </div>
+
+  <!-- Request vs Realisasi chart + Per Area -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px">
+      <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px">Open vs Closed per Minggu</div>
+      <div style="height:200px"><canvas id="impReqRealChart"></canvas></div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px">
+      <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px">Improvement per Area</div>
+      <div id="impAreaRank"></div>
+    </div>
+  </div>
+
+  <!-- Perbandingan visual Request vs Realisasi -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:20px">
+    <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px">📊 Perbandingan Request vs Realisasi</div>
+    <div id="impReqRealSummary" style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:16px"></div>
+    <div style="height:16px;background:var(--border);border-radius:8px;overflow:hidden;position:relative">
+      <div id="impRealBar" style="height:100%;background:var(--green);border-radius:8px;transition:width .6s ease"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace">
+      <span>0%</span>
+      <span id="impRealPct" style="color:var(--green2);font-weight:600">—</span>
+      <span>100%</span>
+    </div>
+  </div>
+
+  <!-- Daftar OPEN/HANDOVER Improvement (Request) -->
+  <div style="font-size:13px;font-weight:600;color:var(--blue);margin-bottom:10px">
+    📋 Request (OPEN / HANDOVER — Sedang Berjalan)
+  </div>
+  <div class="tbl-wrap" style="margin-bottom:20px">
+    <div class="tbl-scroll">
+      <table class="data-table">
+        <thead><tr>
+          <th>ID</th><th>Tanggal</th><th>Unit</th><th>Area</th><th>Mesin</th><th>Deskripsi</th><th>PIC</th><th>Status</th><th>Tindakan</th>
+        </tr></thead>
+        <tbody id="impOpenBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Daftar CLOSED Improvement (Realisasi) -->
+  <div style="font-size:13px;font-weight:600;color:var(--green2);margin-bottom:10px">
+    ✓ Realisasi (CLOSED — Sudah Selesai)
+  </div>
+  <div class="tbl-wrap">
+    <div class="tbl-scroll">
+      <table class="data-table">
+        <thead><tr>
+          <th>ID</th><th>Tanggal</th><th>Unit</th><th>Area</th><th>Mesin</th><th>Deskripsi</th><th>Tindakan</th><th>PIC</th>
+        </tr></thead>
+        <tbody id="impClosedBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 </main>
 </div><!-- end layout -->
 
@@ -1135,7 +1289,8 @@ body.dark .match-panel { background:var(--bg3) }
   <div class="mobile-nav-inner">
     <button class="mnav-btn active" data-page="dashboard"><span class="mnav-ico">◈</span>Dashboard</button>
     <button class="mnav-btn" data-page="reports"><span class="mnav-ico">▤</span>Laporan</button>
-    <button class="mnav-btn" data-page="wo"><span class="mnav-ico">📋</span>WO</button>
+    <button class="mnav-btn" data-page="troubleshooting"><span class="mnav-ico">🔧</span>TS</button>
+    <button class="mnav-btn" data-page="improvement"><span class="mnav-ico">📈</span>IMP</button>
     <button class="mnav-btn" onclick="openAddModal()"><span class="mnav-ico">✚</span>Buat</button>
   </div>
 </nav>
@@ -1210,12 +1365,8 @@ body.dark .match-panel { background:var(--bg3) }
             <label class="flabel">Jenis Laporan <span class="req">*</span></label>
             <select class="fsel2" id="fi-jenisLaporan" required onchange="onJenisLaporanChange()">
               <option value="">— Pilih —</option>
-              <option>Preventive Maintenance</option>
               <option>Troubleshooting</option>
               <option>Improvement</option>
-              <option>Monitoring</option>
-              <option>Project</option>
-              <option>Data Collection</option>
             </select>
             <div class="ferr" id="e-jenisLaporan"></div>
           </div>
@@ -1296,11 +1447,7 @@ body.dark .match-panel { background:var(--bg3) }
             <label class="flabel">Durasi (menit) — otomatis</label>
             <input type="number" class="finput" id="fi-durasi" placeholder="0" min="0" readonly style="color:var(--accent)"/>
           </div>
-          <div class="fg">
-            <label class="flabel">Downtime (menit)</label>
-            <input type="number" class="finput" id="fi-downtime" placeholder="0" min="0"/>
-            <div class="fhint">0 = tidak ada downtime</div>
-          </div>
+          <!-- downtime dihapus, hanya ada di WO -->
 
           <!-- PIC -->
           <div class="fg full">
@@ -1363,6 +1510,26 @@ body.dark .match-panel { background:var(--bg3) }
       <div class="form-actions" style="margin-top:0;padding-top:0;border:none">
         <button class="btn-ghost" onclick="closeOverlay('deleteOverlay')">Batal</button>
         <button class="btn-danger" id="confirmDeleteBtn" onclick="confirmDelete()">🗑 Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: RANK DETAIL (TS Mesin / IMP Area) ═══ -->
+<div class="overlay" id="rankDetailOverlay">
+  <div class="modal" style="max-width:620px;max-height:88vh">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title" id="rankDetailTitle">Detail</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:3px" id="rankDetailSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('rankDetailOverlay')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="rankDetailStats"></div>
+      <div id="rankDetailBody" style="max-height:60vh;overflow-y:auto"></div>
+      <div class="form-actions" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        <button class="btn-ghost" onclick="closeOverlay('rankDetailOverlay')">Tutup</button>
       </div>
     </div>
   </div>
@@ -2024,10 +2191,12 @@ function navigateTo(pageId) {
   document.querySelectorAll('.nav-btn[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === pageId));
   document.querySelectorAll('.sb-item[data-page]').forEach(s => s.classList.toggle('active', s.dataset.page === pageId));
   document.querySelectorAll('.mnav-btn[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === pageId));
-  if (pageId === 'analytics') renderAnalytics();
-  if (pageId === 'toptech')   renderTopTech();
-  if (pageId === 'wo')        renderWOPage();
-  if (pageId === 'config')    applyWOConfigToForm();
+  if (pageId === 'analytics')     renderAnalytics();
+  if (pageId === 'toptech')       renderTopTech();
+  if (pageId === 'wo')            renderWOPage();
+  if (pageId === 'config')        applyWOConfigToForm();
+  if (pageId === 'troubleshooting') renderTSPage();
+  if (pageId === 'improvement')   renderImpPage();
   if (window.innerWidth <= 768) closeSidebar();
 }
 
@@ -2195,6 +2364,7 @@ function renderMiniChart(id, data, colorMap) {
 
 function reportRow(r, withActions = true) {
   const statusCls = { OPEN:'row-open', HANDOVER:'row-handover', CLOSED:'row-closed' }[r.status] || '';
+  const rowClick = `onclick="openDetailModal('${esc(r.idReport)}')" style="cursor:pointer"`;
   const badgeCls  = { OPEN:'badge-open', HANDOVER:'badge-handover', CLOSED:'badge-closed' }[r.status] || '';
   const dtVal = parseInt(r.downtime) || 0;
   const dtStr = dtVal > 0 ? `<span class="${dtVal > 120 ? 'high-downtime' : ''}">${dtVal} mnt</span>` : '—';
@@ -2214,7 +2384,7 @@ function reportRow(r, withActions = true) {
         <button class="tbl-btn btn-sm" style="color:var(--red)" onclick="openDeleteModal('${esc(r.idReport)}')">🗑</button>
       </div>
     </td>` : '';
-  return `<tr class="${statusCls}">
+  return `<tr class="${statusCls}" ${rowClick}>
     <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);white-space:nowrap">${esc(r.idReport||'—')}</td>
     <td style="font-size:11px;color:var(--text3);white-space:nowrap">${fmtDate(r.tanggal)}</td>
     <td><span class="badge ${typeBadge(r.jenisLaporan)}">${shortType(r.jenisLaporan)}</span></td>
@@ -2223,8 +2393,7 @@ function reportRow(r, withActions = true) {
     <td style="font-size:12px;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${esc(r.mesin||'')}">${esc(r.mesin||'—')}</td>
     <td><span class="badge ${workBadge(r.jenisPekerjaan)}">${esc(r.jenisPekerjaan||'—')}</span></td>
     <td style="font-size:12px">${esc(r.pic||'—')}</td>
-    <td><span class="badge ${badgeCls}">${esc(r.status||'—')}</span></td>
-    <td>${dtStr}</td>
+    <td style="font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(r.tindakan||'')}">${esc((r.tindakan||'—').slice(0,50))}</td>
     ${actions}
   </tr>`;
 }
@@ -3812,7 +3981,7 @@ function renderAnalytics() {
   data.filter(r => r.jenisLaporan === 'Troubleshooting' && r.mesin).forEach(r => {
     mesinTS[r.mesin] = (mesinTS[r.mesin] || 0) + 1;
   });
-  renderRanking('rankMesin', mesinTS, '#e05c5c', 10);
+  renderRanking('rankMesin', mesinTS, '#e05c5c', 10, null);
 
   // ── Ranking PIC (jumlah laporan + rata-rata durasi) ──
   const picStats = {};
@@ -3902,20 +4071,27 @@ function renderDoughnutChart(canvasId, existing, labels, vals, colors, cb) {
   }));
 }
 
-function renderRanking(elId, countMap, barColor, limit) {
+// Registry untuk ranking click handlers
+const _rankClickRegistry = {};
+
+function renderRanking(elId, countMap, barColor, limit, handlerKey) {
   const el = document.getElementById(elId);
   if (!el) return;
   const sorted = Object.entries(countMap).sort((a,b)=>b[1]-a[1]).slice(0, limit);
-  if (!sorted.length) { el.innerHTML = '<div class="empty" style="padding:20px">Tidak ada data Troubleshooting</div>'; return; }
+  if (!sorted.length) { el.innerHTML = '<div class="empty" style="padding:20px">Tidak ada data</div>'; return; }
   const max = sorted[0][1];
+  const clickable = !!handlerKey;
   el.innerHTML = '<table class="rank-table">' + sorted.map(([name, val], i) => `
-    <tr>
+    <tr style="${clickable?'cursor:pointer;transition:background .12s':''}"
+      ${clickable?`onclick="_rankClickRegistry['${handlerKey}'](this.dataset.name)" data-name="${esc(name)}"
+        onmouseover="this.style.background='var(--green-light)'" onmouseout="this.style.background=''"`:''}>
       <td class="rank-no">${i+1}</td>
       <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px" title="${esc(name)}">${esc(name)}</td>
       <td style="width:100px;padding:8px 6px">
         <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(val/max*100)}%;background:${barColor}"></div></div>
       </td>
       <td class="rank-val">${val}×</td>
+      ${clickable?`<td style="font-size:10px;color:var(--text3);padding:8px 4px">→</td>`:''}
     </tr>`).join('') + '</table>';
 }
 
@@ -3937,6 +4113,372 @@ function renderRankingPIC(elId, picStats, barColor) {
       <td style="font-size:10px;color:var(--text3);white-space:nowrap;padding:8px 4px">${avgDur}m avg</td>
     </tr>`;
   }).join('') + '</table>';
+}
+// ═══════════════════════════════════════════════════
+// DETAIL POPUP — TS Mesin & IMP Area
+// ═══════════════════════════════════════════════════
+function openTSMesinDetail(mesinName) {
+  const days = parseInt(document.getElementById('tsPeriod')?.value || '30');
+  let data = state.reports.filter(r => r.jenisLaporan === 'Troubleshooting' && r.mesin === mesinName);
+  if (days !== 0) {
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - days);
+    data = data.filter(r => (r.tanggal||'') >= cutoff.toISOString().split('T')[0]);
+  }
+  data.sort((a,b) => new Date(b.tanggal||0) - new Date(a.tanggal||0));
+
+  const open   = data.filter(r => r.status==='OPEN').length;
+  const hand   = data.filter(r => r.status==='HANDOVER').length;
+  const closed = data.filter(r => r.status==='CLOSED').length;
+  const totalDT= data.reduce((s,r) => s+(parseInt(r.downtime)||0), 0);
+
+  const rows = data.map(r => {
+    const sCls = r.status==='CLOSED'?'badge-closed':r.status==='OPEN'?'badge-open':'badge-handover';
+    return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;cursor:pointer"
+      onclick="closeOverlay('rankDetailOverlay');openDetailModal('${esc(r.idReport)}')">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+        <span class="badge ${sCls}">${r.status}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent)">${esc(r.idReport)}</span>
+        <span style="font-size:11px;color:var(--text3)">${fmtDate(r.tanggal)}</span>
+        ${parseInt(r.downtime)>0?`<span style="font-size:10px;background:rgba(192,57,43,.1);color:var(--red);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:1px 6px">⏱ DT: ${r.downtime} mnt</span>`:''}
+        <span style="font-size:11px;color:var(--text3);margin-left:auto">${esc(r.pic||'—')}</span>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px"><strong>Masalah:</strong> ${esc((r.deskripsi||'—').slice(0,120))}${(r.deskripsi||'').length>120?'…':''}</div>
+      ${r.akarMasalah?`<div style="font-size:12px;color:var(--text2);margin-bottom:4px"><strong>Akar masalah:</strong> ${esc(r.akarMasalah.slice(0,100))}${r.akarMasalah.length>100?'…':''}</div>`:''}
+      ${r.tindakan?`<div style="font-size:12px;color:var(--text2)"><strong>Tindakan:</strong> ${esc(r.tindakan.slice(0,100))}${r.tindakan.length>100?'…':''}</div>`:''}
+    </div>`;
+  }).join('') || '<div style="color:var(--text3);font-size:13px;padding:12px 0">Tidak ada data</div>';
+
+  document.getElementById('rankDetailTitle').textContent = '🔧 ' + mesinName;
+  document.getElementById('rankDetailSub').textContent   = data.length + ' laporan troubleshooting' + (days!==0?' ('+days+' hari terakhir)':'');
+  document.getElementById('rankDetailStats').innerHTML = `
+    <span class="badge badge-open">OPEN: ${open}</span>
+    <span class="badge badge-handover">HANDOVER: ${hand}</span>
+    <span class="badge badge-closed">CLOSED: ${closed}</span>
+    ${totalDT>0?`<span class="badge" style="background:rgba(192,57,43,.1);color:var(--red);border:1px solid rgba(192,57,43,.2)">Total Downtime: ${totalDT} mnt</span>`:''}
+  `;
+  document.getElementById('rankDetailBody').innerHTML = rows;
+  openOverlay('rankDetailOverlay');
+}
+
+function openImpAreaDetail(areaName) {
+  const days = parseInt(document.getElementById('impPeriod')?.value || '30');
+  let data = state.reports.filter(r => r.jenisLaporan === 'Improvement' && r.area === areaName);
+  if (days !== 0) {
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - days);
+    data = data.filter(r => (r.tanggal||'') >= cutoff.toISOString().split('T')[0]);
+  }
+  data.sort((a,b) => new Date(b.tanggal||0) - new Date(a.tanggal||0));
+
+  // Group by equipment
+  const byEquip = {};
+  data.forEach(r => {
+    const key = r.mesin || '(Tidak ada mesin)';
+    if (!byEquip[key]) byEquip[key] = [];
+    byEquip[key].push(r);
+  });
+
+  const open   = data.filter(r => r.status!=='CLOSED').length;
+  const closed = data.filter(r => r.status==='CLOSED').length;
+
+  const equipSections = Object.entries(byEquip)
+    .sort((a,b) => b[1].length - a[1].length)
+    .map(([equipName, rList]) => {
+      const rows = rList.map(r => {
+        const sCls = r.status==='CLOSED'?'badge-closed':r.status==='OPEN'?'badge-open':'badge-handover';
+        return `<div style="border-left:2px solid var(--border);margin-left:8px;padding-left:10px;margin-bottom:8px;cursor:pointer"
+          onclick="closeOverlay('rankDetailOverlay');openDetailModal('${esc(r.idReport)}')">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap">
+            <span class="badge ${sCls}">${r.status}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent)">${esc(r.idReport)}</span>
+            <span style="font-size:11px;color:var(--text3)">${fmtDate(r.tanggal)}</span>
+            <span style="font-size:11px;color:var(--text3);margin-left:auto">${esc(r.pic||'—')}</span>
+          </div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:3px">${esc((r.deskripsi||'—').slice(0,120))}${(r.deskripsi||'').length>120?'…':''}</div>
+          ${r.tindakan?`<div style="font-size:11px;color:var(--text3)">→ ${esc(r.tindakan.slice(0,80))}${r.tindakan.length>80?'…':''}</div>`:''}
+        </div>`;
+      }).join('');
+
+      const doneCount   = rList.filter(r=>r.status==='CLOSED').length;
+      const equipStatus = doneCount===rList.length
+        ?'<span style="font-size:10px;color:var(--green2)">✓ Semua selesai</span>'
+        :`<span style="font-size:10px;color:var(--orange)">${doneCount}/${rList.length} selesai</span>`;
+
+      return `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">${esc(equipName)}</span>
+          <span style="font-size:11px;color:var(--text3)">(${rList.length} laporan)</span>
+          ${equipStatus}
+        </div>
+        ${rows}
+      </div>`;
+    }).join('') || '<div style="color:var(--text3);font-size:13px;padding:12px 0">Tidak ada data</div>';
+
+  document.getElementById('rankDetailTitle').textContent = '📈 ' + areaName;
+  document.getElementById('rankDetailSub').textContent   = data.length + ' laporan improvement' + (days!==0?' ('+days+' hari terakhir)':'') + ' · ' + Object.keys(byEquip).length + ' equipment';
+  document.getElementById('rankDetailStats').innerHTML = `
+    <span class="badge b-improve">Request/Open: ${open}</span>
+    <span class="badge badge-closed">Realisasi/Closed: ${closed}</span>
+    <span class="badge b-prev">${Object.keys(byEquip).length} equipment terlibat</span>
+  `;
+  document.getElementById('rankDetailBody').innerHTML = equipSections;
+  openOverlay('rankDetailOverlay');
+}
+// ═══════════════════════════════════════════════════
+// TROUBLESHOOTING PAGE
+// ═══════════════════════════════════════════════════
+let _chartTSOC = null;
+
+function getTSData() {
+  const days = parseInt(document.getElementById('tsPeriod')?.value || '30');
+  const all  = state.reports.filter(r => r.jenisLaporan === 'Troubleshooting');
+  if (days === 0) return all;
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - days);
+  return all.filter(r => (r.tanggal||'') >= cutoff.toISOString().split('T')[0]);
+}
+
+function renderTSPage() {
+  if (typeof Chart === 'undefined') { loadChartJS(() => renderTSPage()); return; }
+  const data    = getTSData();
+  const days    = parseInt(document.getElementById('tsPeriod')?.value || '30');
+  const open    = data.filter(r => r.status === 'OPEN');
+  const hand    = data.filter(r => r.status === 'HANDOVER');
+  const closed  = data.filter(r => r.status === 'CLOSED');
+  const rate    = data.length ? Math.round(closed.length / data.length * 100) : 0;
+  const label   = days === 0 ? 'Semua data' : days + ' hari terakhir';
+
+  setText('ts-total',   data.length);
+  setText('ts-open',    open.length);
+  setText('ts-closed',  closed.length);
+  setText('ts-handover',hand.length);
+  setText('ts-rate',    rate + '%');
+  const lbl = document.getElementById('tsDateLabel');
+  if (lbl) lbl.textContent = label + ' — ' + data.length + ' laporan troubleshooting';
+
+  // Open vs Closed per minggu
+  const weeks = {};
+  data.forEach(r => {
+    if (!r.tanggal) return;
+    const d = new Date(r.tanggal);
+    d.setDate(d.getDate() - d.getDay());
+    const wk = d.toISOString().split('T')[0].slice(5);
+    if (!weeks[wk]) weeks[wk] = { open:0, closed:0 };
+    if (r.status === 'CLOSED') weeks[wk].closed++;
+    else weeks[wk].open++;
+  });
+  const wkKeys   = Object.keys(weeks).sort().slice(-12);
+  const wkOpen   = wkKeys.map(k => weeks[k].open);
+  const wkClosed = wkKeys.map(k => weeks[k].closed);
+
+  const ctx = document.getElementById('tsOpenClosedChart')?.getContext('2d');
+  if (ctx) {
+    if (_chartTSOC) _chartTSOC.destroy();
+    const isDark = document.body.classList.contains('dark');
+    const gridC  = isDark ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.07)';
+    const textC  = isDark ? '#6a8e6a' : '#7a9a7a';
+    _chartTSOC = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: wkKeys,
+        datasets: [
+          { label:'OPEN/HANDOVER', data:wkOpen,   backgroundColor:'rgba(192,57,43,.7)', borderRadius:3 },
+          { label:'CLOSED',        data:wkClosed, backgroundColor:'rgba(74,158,63,.7)', borderRadius:3 },
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ labels:{ color:textC, font:{size:10} } } },
+        scales:{
+          x:{ stacked:true, ticks:{color:textC,font:{size:10}}, grid:{color:gridC} },
+          y:{ stacked:true, ticks:{color:textC,font:{size:10}}, grid:{color:gridC}, beginAtZero:true }
+        }
+      }
+    });
+  }
+
+  // Top mesin bermasalah
+  const mesinCount = {};
+  data.forEach(r => { if(r.mesin) mesinCount[r.mesin] = (mesinCount[r.mesin]||0)+1; });
+  _rankClickRegistry['tsMesin'] = (name) => openTSMesinDetail(name);
+  renderRanking('tsMesinRank', mesinCount, 'var(--red)', 10, 'tsMesin');
+
+  // OPEN/HANDOVER table
+  const openBody = document.getElementById('tsOpenBody');
+  if (openBody) {
+    const combined = [...open, ...hand].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+    openBody.innerHTML = combined.length ? combined.map(r => {
+      const bCls = r.status === 'OPEN' ? 'badge-open' : 'badge-handover';
+      return `<tr class="${r.status==='OPEN'?'row-open':'row-handover'}" style="cursor:pointer" onclick="openDetailModal('${esc(r.idReport)}')">
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent)">${esc(r.idReport)}</td>
+        <td style="white-space:nowrap;font-size:11px">${fmtDate(r.tanggal)}</td>
+        <td><span class="badge ${r.unit==='Unit 1'?'b-unit1':'b-unit2'}">${esc(r.unit||'—')}</span></td>
+        <td style="font-size:12px">${esc(r.area||'—')}</td>
+        <td style="font-size:12px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.mesin||'—')}</td>
+        <td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((r.deskripsi||'—').slice(0,80))}</td>
+        <td style="font-size:12px">${esc(r.pic||'—')}</td>
+        <td><span class="badge ${bCls}">${r.status}</span></td>
+        <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((r.tindakan||'—').slice(0,60))}</td>
+      </tr>`;
+    }).join('') : emptyRow(9, 'Tidak ada laporan OPEN/HANDOVER');
+  }
+
+  // CLOSED table
+  const closedBody = document.getElementById('tsClosedBody');
+  if (closedBody) {
+    const sortedClosed = [...closed].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+    closedBody.innerHTML = sortedClosed.length ? sortedClosed.map(r => `
+      <tr class="row-closed" style="cursor:pointer" onclick="openDetailModal('${esc(r.idReport)}')">
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent)">${esc(r.idReport)}</td>
+        <td style="white-space:nowrap;font-size:11px">${fmtDate(r.tanggal)}</td>
+        <td><span class="badge ${r.unit==='Unit 1'?'b-unit1':'b-unit2'}">${esc(r.unit||'—')}</span></td>
+        <td style="font-size:12px">${esc(r.area||'—')}</td>
+        <td style="font-size:12px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.mesin||'—')}</td>
+        <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((r.deskripsi||'—').slice(0,60))}</td>
+        <td style="font-size:12px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((r.akarMasalah||'—').slice(0,60))}</td>
+        <td style="font-size:12px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((r.tindakan||'—').slice(0,60))}</td>
+        <td style="font-size:12px">${esc(r.pic||'—')}</td>
+      </tr>`).join('') : emptyRow(9, 'Belum ada laporan CLOSED');
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// IMPROVEMENT PAGE
+// ═══════════════════════════════════════════════════
+let _chartImpRR = null;
+
+function getImpData() {
+  const days = parseInt(document.getElementById('impPeriod')?.value || '30');
+  const all  = state.reports.filter(r => r.jenisLaporan === 'Improvement');
+  if (days === 0) return all;
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - days);
+  return all.filter(r => (r.tanggal||'') >= cutoff.toISOString().split('T')[0]);
+}
+
+function renderImpPage() {
+  if (typeof Chart === 'undefined') { loadChartJS(() => renderImpPage()); return; }
+  const data     = getImpData();
+  const days     = parseInt(document.getElementById('impPeriod')?.value || '30');
+  const open     = data.filter(r => r.status === 'OPEN');
+  const hand     = data.filter(r => r.status === 'HANDOVER');
+  const closed   = data.filter(r => r.status === 'CLOSED');
+  const request  = [...open, ...hand];
+  const rate     = data.length ? Math.round(closed.length / data.length * 100) : 0;
+  const label    = days === 0 ? 'Semua data' : days + ' hari terakhir';
+
+  setText('imp-total',     data.length);
+  setText('imp-request',   request.length);
+  setText('imp-realisasi', closed.length);
+  setText('imp-handover',  hand.length);
+  setText('imp-rate',      rate + '%');
+  const lbl = document.getElementById('impDateLabel');
+  if (lbl) lbl.textContent = label + ' — ' + data.length + ' laporan improvement';
+
+  // Progress bar
+  const bar = document.getElementById('impRealBar');
+  if (bar) bar.style.width = rate + '%';
+  setText('impRealPct', rate + '%');
+
+  // Summary pills
+  const summary = document.getElementById('impReqRealSummary');
+  if (summary) {
+    summary.innerHTML = `
+      <div style="text-align:center">
+        <div style="font-size:28px;font-weight:700;color:var(--blue)">${data.length}</div>
+        <div style="font-size:11px;color:var(--text3)">Total Request</div>
+      </div>
+      <div style="font-size:24px;color:var(--text3)">→</div>
+      <div style="text-align:center">
+        <div style="font-size:28px;font-weight:700;color:var(--green2)">${closed.length}</div>
+        <div style="font-size:11px;color:var(--text3)">Terealisasi</div>
+      </div>
+      <div style="text-align:center;margin-left:auto">
+        <div style="font-size:28px;font-weight:700;color:${rate>=70?'var(--green2)':rate>=40?'var(--orange)':'var(--red)'}">${rate}%</div>
+        <div style="font-size:11px;color:var(--text3)">Realisasi Rate</div>
+      </div>`;
+  }
+
+  // Request vs Realisasi per minggu
+  const weeks = {};
+  data.forEach(r => {
+    if (!r.tanggal) return;
+    const d = new Date(r.tanggal);
+    d.setDate(d.getDate() - d.getDay());
+    const wk = d.toISOString().split('T')[0].slice(5);
+    if (!weeks[wk]) weeks[wk] = { request:0, realisasi:0 };
+    if (r.status === 'CLOSED') weeks[wk].realisasi++;
+    else weeks[wk].request++;
+  });
+  const wkKeys = Object.keys(weeks).sort().slice(-12);
+  const wkReq  = wkKeys.map(k => weeks[k].request);
+  const wkReal = wkKeys.map(k => weeks[k].realisasi);
+
+  const ctx = document.getElementById('impReqRealChart')?.getContext('2d');
+  if (ctx) {
+    if (_chartImpRR) _chartImpRR.destroy();
+    const isDark = document.body.classList.contains('dark');
+    const gridC  = isDark ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.07)';
+    const textC  = isDark ? '#6a8e6a' : '#7a9a7a';
+    _chartImpRR = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: wkKeys,
+        datasets: [
+          { label:'Request (Open/Handover)', data:wkReq,  backgroundColor:'rgba(43,108,184,.7)', borderRadius:3 },
+          { label:'Realisasi (Closed)',       data:wkReal, backgroundColor:'rgba(74,158,63,.7)',  borderRadius:3 },
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ labels:{ color:textC, font:{size:10} } } },
+        scales:{
+          x:{ ticks:{color:textC,font:{size:10}}, grid:{color:gridC} },
+          y:{ ticks:{color:textC,font:{size:10}}, grid:{color:gridC}, beginAtZero:true }
+        }
+      }
+    });
+  }
+
+  // Per area ranking
+  const areaCount = {};
+  data.forEach(r => { if(r.area) areaCount[r.area] = (areaCount[r.area]||0)+1; });
+  _rankClickRegistry['impArea'] = (name) => openImpAreaDetail(name);
+  renderRanking('impAreaRank', areaCount, 'var(--green)', 10, 'impArea');
+
+  // OPEN/HANDOVER table
+  const openBody = document.getElementById('impOpenBody');
+  if (openBody) {
+    const sortedOpen = [...request].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+    openBody.innerHTML = sortedOpen.length ? sortedOpen.map(r => {
+      const bCls = r.status === 'OPEN' ? 'badge-open' : 'badge-handover';
+      return `<tr class="${r.status==='OPEN'?'row-open':'row-handover'}" style="cursor:pointer" onclick="openDetailModal('${esc(r.idReport)}')">
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent)">${esc(r.idReport)}</td>
+        <td style="white-space:nowrap;font-size:11px">${fmtDate(r.tanggal)}</td>
+        <td><span class="badge ${r.unit==='Unit 1'?'b-unit1':'b-unit2'}">${esc(r.unit||'—')}</span></td>
+        <td style="font-size:12px">${esc(r.area||'—')}</td>
+        <td style="font-size:12px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.mesin||'—')}</td>
+        <td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((r.deskripsi||'—').slice(0,80))}</td>
+        <td style="font-size:12px">${esc(r.pic||'—')}</td>
+        <td><span class="badge ${bCls}">${r.status}</span></td>
+        <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((r.tindakan||'—').slice(0,60))}</td>
+      </tr>`;
+    }).join('') : emptyRow(9, 'Tidak ada request yang sedang berjalan');
+  }
+
+  // CLOSED table
+  const closedBody = document.getElementById('impClosedBody');
+  if (closedBody) {
+    const sortedClosed = [...closed].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+    closedBody.innerHTML = sortedClosed.length ? sortedClosed.map(r => `
+      <tr class="row-closed" style="cursor:pointer" onclick="openDetailModal('${esc(r.idReport)}')">
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent)">${esc(r.idReport)}</td>
+        <td style="white-space:nowrap;font-size:11px">${fmtDate(r.tanggal)}</td>
+        <td><span class="badge ${r.unit==='Unit 1'?'b-unit1':'b-unit2'}">${esc(r.unit||'—')}</span></td>
+        <td style="font-size:12px">${esc(r.area||'—')}</td>
+        <td style="font-size:12px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.mesin||'—')}</td>
+        <td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((r.deskripsi||'—').slice(0,80))}</td>
+        <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((r.tindakan||'—').slice(0,60))}</td>
+        <td style="font-size:12px">${esc(r.pic||'—')}</td>
+      </tr>`).join('') : emptyRow(8, 'Belum ada improvement yang terealisasi');
+  }
 }
 
 function loadChartJS(cb) {
